@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package com.mycompany.proyecto_cutwidth;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -14,15 +13,18 @@ import java.util.Map;
 
 /**
  *
- * @author USUARIO
+ * @author JHON LETURNE
  */
 public class Cutwidth 
 {
     public static String SEPARADOR=",";
+    public static String NOMBRE_ARCHIVO="datos2.txt";
     public static Integer CANTIDAD_NODOS;
     
     public static void main(String[] args) 
     {
+        long startTime = System.currentTimeMillis();
+        
         List<ConexionInicial> lst_conexion_inicial=leer_archivo();
         String [] nod=null;
         if(lst_conexion_inicial!=null)
@@ -34,14 +36,102 @@ public class Cutwidth
         CANTIDAD_NODOS=nod.length;
         Map<String, Integer> nodos_indentificador=identificar_nodos(nod);
         Nodo[]Nodos=crear_nodos(nod);
+        Nodo [][] matriz_nodos=crear_matriz_nodo(Nodos);
+        Cutwidth(matriz_nodos,nodos_indentificador,lst_conexion_inicial);
+        contar_particiones(Nodos);
         
-
+        long endTime = System.currentTimeMillis();
+        System.out.println("Tardo en ejecutarse= "+((double)(endTime-startTime)/1000));
+        
     }
     
-    
-    private static void Cutwidth(Nodo[][] matriz_nodos,Map<String, Integer> nodos_indentificador)
+    private static void Cutwidth(Nodo[][] matriz_nodos,Map<String, 
+            Integer> nodos_indentificador,List<ConexionInicial> lst_conexion_inicial)
     {
-        
+        for(int x=0;x<matriz_nodos.length;x++)
+        {
+            for(int i=0;i<lst_conexion_inicial.size();i++)
+            {
+                int n=0;
+                if(!lst_conexion_inicial.get(i).nodo.equals(matriz_nodos[x][x].getValue())) continue;
+                
+                int rango_inicial=nodos_indentificador.get(lst_conexion_inicial.get(i).getNodo());
+                int rango_final=nodos_indentificador.get(lst_conexion_inicial.get(i).getConexion());
+                
+                if(rango_inicial>rango_final)
+                {
+                    int aux=rango_inicial;
+                    rango_inicial=rango_final;
+                    rango_final=aux;
+                }
+                
+                for(n=rango_inicial;n<=rango_final;n++)
+                {
+                    //pa=particion a ; pb=particion b
+                    int pa=0,pb=0;
+                    
+                    if(n==rango_inicial)
+                        pb=1;
+                    else if(n==matriz_nodos[0].length-1 || n==rango_final)
+                        pa=1;
+                    else{
+                        pa=1;
+                        pb=1;
+                    }
+                    
+                    insertar_particiones(matriz_nodos[x][n],pa,pb);
+                }
+                
+                n=n-1;
+                //se uine de a hasta d
+                conexion_lado_lado(matriz_nodos,rango_inicial,rango_inicial,rango_final);
+                //se une de d hasta a
+                conexion_lado_lado(matriz_nodos,rango_final,rango_final,rango_inicial);
+
+            }
+        }
+    }
+    
+    public static void insertar_particiones(Nodo nodo,int particion_a,int particion_b)
+    {
+        if(particion_a==1)
+        {
+            if(nodo.getParticionA()!=null){
+                nodo.getParticionA().add(particion_a);
+            }else
+            {
+                List<Integer> lstpa=new ArrayList<>();
+                nodo.setParticionA(lstpa);
+                nodo.getParticionA().add(particion_a); 
+            }
+        }
+                    
+        if(particion_b==1)
+        {
+           if(nodo.getParticionB()!=null){
+                nodo.getParticionB().add(particion_b);
+            }else
+            {
+                List<Integer> lstpb=new ArrayList<>();
+                nodo.setParticionB(lstpb);
+                nodo.getParticionB().add(particion_b); 
+            } 
+        }
+    }
+    
+    public static void conexion_lado_lado(Nodo [][] matriz_nodos,int x,int i,int n)
+    {
+        List<Nodo> linked=matriz_nodos[x][i].getLinked();
+
+        if(linked==null){
+            linked=new ArrayList();
+            linked.add(matriz_nodos[x][n]);
+            
+            matriz_nodos[x][i].setLinked(linked);
+            
+        }else
+            linked.add(matriz_nodos[x][n]);
+
     }
     
     private static Nodo[][] crear_matriz_nodo(Nodo[]Nodos)
@@ -54,6 +144,7 @@ public class Cutwidth
                for(int columna=0;columna<matriz_nodos[0].length;columna++)
                    matriz_nodos[fila][columna]=Nodos[columna];
             }
+            return matriz_nodos;
         }
         catch(Exception ex)
         {
@@ -61,7 +152,6 @@ public class Cutwidth
         }
         return null;
     }
-    
     
     private static Nodo[] crear_nodos(String [] nodos)
     {
@@ -79,7 +169,6 @@ public class Cutwidth
         return null;
     }
     
-    
     private static Map<String, Integer> identificar_nodos(String [] nodos)
     {
         try
@@ -95,7 +184,6 @@ public class Cutwidth
         }
         return null;
     }
-    
     
     private static String obtener_nodos(List<ConexionInicial> lst_conexion_inicial)
     {
@@ -119,7 +207,6 @@ public class Cutwidth
         return null;
     }
     
-    
     private static String[] ordenar_nodos(String nodos)
     {
         String [] nod=nodos.split(SEPARADOR);
@@ -141,12 +228,11 @@ public class Cutwidth
         return nod;
     }
     
-    
     //C:\Users\USUARIO\Desktop\cutwidth\proyecto_cutwidth\src\main\java\com\mycompany\proyecto_cutwidth\datos.txt
     private static List<ConexionInicial> leer_archivo()
     {
        String directorio=System.getProperty("user.dir");
-       String ruta="\\src\\main\\java\\com\\mycompany\\proyecto_cutwidth\\datos.txt";
+       String ruta="\\src\\main\\java\\com\\mycompany\\proyecto_cutwidth\\"+NOMBRE_ARCHIVO;
        try 
        {
             FileReader fr = new FileReader(directorio+ruta);
@@ -167,5 +253,31 @@ public class Cutwidth
        return null;
     }
     
+    
+    
+    //otros recursos
+    public static void contar_particiones(Nodo [] nodos)
+    {
+        int k=1;
+        for(int x=0;x<nodos.length;x++)
+        {
+            int []cantidad_particiones_A_B=cantidad_buscar_conexiones(nodos,x,k);
+            System.out.println("("+nodos[x].getValue()+")= "+cantidad_particiones_A_B[0]+"- ("+nodos[k].getValue()+") ="+cantidad_particiones_A_B[1]);
+            if(k==nodos.length-1)
+                break;
+            k++;
+        }
+    }
+    
+    public static int[] cantidad_buscar_conexiones(Nodo [] nodos,Integer x,Integer k)
+    {
+        int a=0,b=0;
+        if(nodos[x].getParticionB()!=null && nodos[k].getParticionA()!=null){
+            a=nodos[x].getParticionB().size();
+            b=nodos[k].getParticionA().size();
+        }
+        return new int[]{a,b};
+    }
+
     
 }

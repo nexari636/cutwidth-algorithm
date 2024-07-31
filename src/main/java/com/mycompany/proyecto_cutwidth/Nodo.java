@@ -17,7 +17,7 @@ public class Nodo
 {
     private String value;
     private List<Nodo> linked;
-    private List<Particiones> lst_particiones;
+   // private List<Particiones> lst_particiones;
     
     private List<Integer> particionA;
     private List<Integer> particionB;

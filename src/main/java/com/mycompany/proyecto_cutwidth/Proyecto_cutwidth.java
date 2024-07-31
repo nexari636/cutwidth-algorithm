@@ -155,14 +155,14 @@ public class Proyecto_cutwidth {
                     }
                      //System.out.println("se va a imprimir el grafooooo= "+n);
 
-                    if(grafo[x][n].getLst_particiones()!=null)
-                        grafo[x][n].getLst_particiones().add(particiones);
-                    else
-                    {
-                        lst_particiones=new ArrayList<>();
-                        grafo[x][n].setLst_particiones(lst_particiones);
-                        grafo[x][n].getLst_particiones().add(particiones);
-                    }
+//                    if(grafo[x][n].getLst_particiones()!=null)
+//                        grafo[x][n].getLst_particiones().add(particiones);
+//                    else
+//                    {
+//                        lst_particiones=new ArrayList<>();
+//                        grafo[x][n].setLst_particiones(lst_particiones);
+//                        grafo[x][n].getLst_particiones().add(particiones);
+//                    }
                     
                     if(pa!=0 || (pa==1 && pb==1)){
                         if(grafo[x][n].getParticionA()!=null){
