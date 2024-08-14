@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +16,10 @@ import java.util.Map;
  *
  * @author JHON LETURNE
  */
-public class Cutwidth 
+public class CutwidthV1 
 {
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="datos5.txt";
+    public static String NOMBRE_ARCHIVO="datos2.txt";
     public static Integer CANTIDAD_NODOS;
     
     public static void main(String[] args) 
@@ -48,15 +49,23 @@ public class Cutwidth
     private static void Cutwidth(Nodo[][] matriz_nodos,Map<String, 
             Integer> nodos_indentificador,List<ConexionInicial> lst_conexion_inicial)
     {
-    
+//        Boolean paso_nodo_igual=false;
+        
         for(int x=0;x<matriz_nodos.length;x++)
         {
             for(int i=0;i<lst_conexion_inicial.size();i++)
             {
-
+//                if (paso_nodo_igual) { paso_nodo_igual=false; break;}
+                
                 int n=0;
                 if(!lst_conexion_inicial.get(i).nodo.equals(matriz_nodos[x][x].getValue())) continue;
-  
+                
+//                if(lst_conexion_inicial.size()-1>=(i+1))
+//                {
+//                    if(!lst_conexion_inicial.get(i+1).nodo.equals(matriz_nodos[x][x].getValue()))
+//                        paso_nodo_igual=true;
+//                }
+
                // paso_nodo_igual=true;
                 int rango_inicial=nodos_indentificador.get(lst_conexion_inicial.get(i).getNodo());
                 int rango_final=nodos_indentificador.get(lst_conexion_inicial.get(i).getConexion());
@@ -246,7 +255,7 @@ public class Cutwidth
                //System.out.println("LINEA= "+linea.trim());
                linea=linea.trim();
                String vec[]=linea.split(SEPARADOR);
-               lst_conexion_inicial.add(new ConexionInicial(vec[0],vec[1],0));
+               lst_conexion_inicial.add(new ConexionInicial(vec[0],vec[1],1));
             }
             return lst_conexion_inicial;
        }
@@ -317,4 +326,24 @@ public class Cutwidth
        return 0;
     }
    
+    public void COMBINACIONES_BARAJA(List<ConexionInicial> lst_conexion_inicial)
+    {
+        
+        
+        
+        List<Integer[]> lst_integer=new ArrayList<>();
+        Integer[] numeros = { 1, 2, 3, 4, 5, 6, 7 };
+        int cont=10000;
+
+        while(cont>1)
+        {
+            Collections.shuffle(Arrays.asList(numeros));
+            cont--;
+            lst_integer.add(Arrays.copyOf(numeros, numeros.length));
+            //System.out.println(Arrays.toString(numeros));
+
+        }  
+    }
+    
+    
 }
