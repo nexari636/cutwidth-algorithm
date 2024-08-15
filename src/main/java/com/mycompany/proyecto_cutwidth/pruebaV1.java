@@ -1,8 +1,20 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.proyecto_cutwidth;
+
+
+/**
+ *
+ * @author USUARIO
+ */
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -16,10 +28,10 @@ import java.util.Map;
  *
  * @author JHON LETURNE
  */
-public class CutwidthV1 
+public class pruebaV1 
 {
-    public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="datos5.txt";
+    public static String SEPARADOR=" ";
+    public static String NOMBRE_ARCHIVO="datos6.txt";
     public static Integer CANTIDAD_NODOS;
     
     public static void main(String[] args) 
@@ -27,16 +39,47 @@ public class CutwidthV1
         long startTime = System.currentTimeMillis();
         
         List<ConexionInicial> lst_conexion_inicial=leer_archivo();
+        
+        OrdenamientoUtil.burbuja_numeros(lst_conexion_inicial);
+        
+        for(ConexionInicial ci : lst_conexion_inicial){
+           // System.out.println(ci.nodo+" - "+ci.conexion);
+        }
+        
         String [] nod=null;
         if(lst_conexion_inicial!=null)
         {
             String nodos=obtener_nodos(lst_conexion_inicial);
+            //System.out.println(nodos);
             nod=ordenar_nodos(nodos);
+            
+            for(String n : nod){
+              //  System.out.println(n);
+            }
+            
         }else return;
         
         CANTIDAD_NODOS=nod.length;
         Map<String, Integer> nodos_indentificador=identificar_nodos(nod);
+        
+        for(int x=0;x<nodos_indentificador.size();x++)
+        {
+            //System.out.println(nodos_indentificador.get(nod[x]));
+        }
+        
+        //System.out.println(nodos_indentificador.get(lst_conexion_inicial.get(17).getNodo()));
+          //      System.out.println(nodos_indentificador.get(lst_conexion_inicial.get(17).getConexion()));
+
         Nodo[]Nodos=crear_nodos(nod);
+        
+        for(int x=0;x<Nodos.length;x++)
+        {
+            
+           // System.out.println(Nodos[x].getValue());
+        }
+
+        
+        
         Nodo [][] matriz_nodos=crear_matriz_nodo(Nodos);
         Cutwidth(matriz_nodos,nodos_indentificador,lst_conexion_inicial);
         contar_particiones(Nodos);
@@ -67,6 +110,7 @@ public class CutwidthV1
 //                }
 
                // paso_nodo_igual=true;
+               //System.out.println(i);
                 int rango_inicial=nodos_indentificador.get(lst_conexion_inicial.get(i).getNodo());
                 int rango_final=nodos_indentificador.get(lst_conexion_inicial.get(i).getConexion());
                 
@@ -169,6 +213,7 @@ public class CutwidthV1
     {
         try
         {
+            //System.out.println("Cantidad nodos= "+nodos.length);
             Nodo[]Nodos=new Nodo[CANTIDAD_NODOS];
             for(int x=0;x<Nodos.length;x++)
                 Nodos[x]=new Nodo(nodos[x]);
@@ -186,8 +231,10 @@ public class CutwidthV1
         try
         {
             Map<String, Integer> nodos_indentificador=new HashMap();
-            for(int x=0;x<nodos.length;x++)
+            for(int x=0;x<nodos.length;x++){
+                //System.out.println(nodos[x]);
                 nodos_indentificador.put(nodos[x], x);
+            }
             return nodos_indentificador;
         }
         catch(Exception ex)
@@ -204,11 +251,24 @@ public class CutwidthV1
             String nodos="";
             for(ConexionInicial ci : lst_conexion_inicial)
             {
-                if(!nodos.contains(ci.nodo))
-                    nodos+=ci.nodo+SEPARADOR;
-                if(!nodos.contains(ci.conexion))
-                    nodos+=ci.conexion+SEPARADOR;
+               // System.out.println(ci.nodo+" - "+ci.conexion);                
+               //
+
+                if(Arrays.asList(nodos.split(",")).indexOf(ci.nodo)==-1)
+                    nodos+=ci.nodo+",";
+                if(Arrays.asList(nodos.split(",")).indexOf(ci.conexion)==-1)
+                    nodos+=ci.conexion+",";
+
+               
+               
+//                if(!nodos.contentEquals(ci.nodo))
+//                    nodos+=ci.nodo+",";
+//                if(!nodos.contentEquals(ci.conexion))
+//                    nodos+=ci.conexion+",";
+                
+                 //System.out.println(nodos);
             }
+            //System.out.println(nodos);
             nodos=nodos.substring(0, nodos.length()-1);
             return nodos;
         }
@@ -221,8 +281,11 @@ public class CutwidthV1
     
     private static String[] ordenar_nodos(String nodos)
     {
-        String [] nod=nodos.split(SEPARADOR);
-        String nodos_ordenados="";
+        String [] nod=nodos.split(",");
+        
+   
+        
+        //String nodos_ordenados="";
         boolean es_numero=nodos.matches("[0-9,;]*"); //FALSE SI ES STRING Y TRUE SI ES NUMERICO
         if(es_numero)
         {
@@ -233,9 +296,15 @@ public class CutwidthV1
             nod=Arrays.stream(nodos_integer)
                                 .mapToObj(String::valueOf)
                                 .toArray(String[]::new);
+            
+            
         }else
         {
            Arrays.sort(nod);
+           
+            
+        
+           
         }
         return nod;
     }
@@ -255,7 +324,7 @@ public class CutwidthV1
                //System.out.println("LINEA= "+linea.trim());
                linea=linea.trim();
                String vec[]=linea.split(SEPARADOR);
-               lst_conexion_inicial.add(new ConexionInicial(vec[0],vec[1],1));
+               lst_conexion_inicial.add(new ConexionInicial(vec[0].trim(),vec[1].trim(),1));
             }
             return lst_conexion_inicial;
        }

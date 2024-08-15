@@ -1,13 +1,19 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.proyecto_cutwidth.implementacion;
+/**
+ *
+ * @author USUARIO
+ */
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package com.mycompany.proyecto_cutwidth;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,30 +22,46 @@ import java.util.Map;
  *
  * @author JHON LETURNE
  */
-public class CutwidthV1 
+public class Cutwidth
 {
+    public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="datos5.txt";
+    public static String NOMBRE_ARCHIVO="datos6.txt";
     public static Integer CANTIDAD_NODOS;
+    public static Integer POBLACION=100;
+    public static int contador=0;
     
     public static void main(String[] args) 
     {
         long startTime = System.currentTimeMillis();
         
-        List<ConexionInicial> lst_conexion_inicial=leer_archivo();
+        List<ConexionInicial> lst_conexion_inicial=Utilidades.leer_archivo(SEPARADOR_ARCHIVO,NOMBRE_ARCHIVO);
+        Utilidades.algoritmo_burbuja(lst_conexion_inicial); //opcional
+        //
+        InteraccionesData itd=new InteraccionesData(lst_conexion_inicial,POBLACION);
+        itd.conjunto_interacciones.add(lst_conexion_inicial);
+        
+        int menor_corte[]=new int[itd.conjunto_interacciones.size()]; 
+        
         String [] nod=null;
         if(lst_conexion_inicial!=null)
         {
             String nodos=obtener_nodos(lst_conexion_inicial);
             nod=ordenar_nodos(nodos);
         }else return;
-        
+
         CANTIDAD_NODOS=nod.length;
         Map<String, Integer> nodos_indentificador=identificar_nodos(nod);
-        Nodo[]Nodos=crear_nodos(nod);
-        Nodo [][] matriz_nodos=crear_matriz_nodo(Nodos);
-        Cutwidth(matriz_nodos,nodos_indentificador,lst_conexion_inicial);
-        contar_particiones(Nodos);
+            
+        for(int x=0;x<itd.conjunto_interacciones.size();x++)
+        {
+            Nodo[]Nodos=crear_nodos(nod);
+            Nodo [][] matriz_nodos=crear_matriz_nodo(Nodos);
+            //Cutwidth(matriz_nodos,nodos_indentificador,lst_conexion_inicial);
+            Cutwidth(matriz_nodos,nodos_indentificador,itd.conjunto_interacciones.get(x));
+            contar_particiones(Nodos,menor_corte);
+        }
+        System.out.println("El menor numero de conexiones entre todos los maximos es: "+Utilidades.MIN(menor_corte));
         
         long endTime = System.currentTimeMillis();
         System.out.println("Tardo en ejecutarse= "+((double)(endTime-startTime)/1000));
@@ -49,23 +71,15 @@ public class CutwidthV1
     private static void Cutwidth(Nodo[][] matriz_nodos,Map<String, 
             Integer> nodos_indentificador,List<ConexionInicial> lst_conexion_inicial)
     {
-//        Boolean paso_nodo_igual=false;
+        //Boolean paso_nodo_igual=false;
         
         for(int x=0;x<matriz_nodos.length;x++)
         {
             for(int i=0;i<lst_conexion_inicial.size();i++)
             {
-//                if (paso_nodo_igual) { paso_nodo_igual=false; break;}
-                
                 int n=0;
                 if(!lst_conexion_inicial.get(i).nodo.equals(matriz_nodos[x][x].getValue())) continue;
                 
-//                if(lst_conexion_inicial.size()-1>=(i+1))
-//                {
-//                    if(!lst_conexion_inicial.get(i+1).nodo.equals(matriz_nodos[x][x].getValue()))
-//                        paso_nodo_igual=true;
-//                }
-
                // paso_nodo_igual=true;
                 int rango_inicial=nodos_indentificador.get(lst_conexion_inicial.get(i).getNodo());
                 int rango_final=nodos_indentificador.get(lst_conexion_inicial.get(i).getConexion());
@@ -171,7 +185,7 @@ public class CutwidthV1
         {
             Nodo[]Nodos=new Nodo[CANTIDAD_NODOS];
             for(int x=0;x<Nodos.length;x++)
-                Nodos[x]=new Nodo(nodos[x]);
+                Nodos[x]=new Nodo(nodos[x],1);
             return Nodos;
         }
         catch(Exception ex)
@@ -204,9 +218,11 @@ public class CutwidthV1
             String nodos="";
             for(ConexionInicial ci : lst_conexion_inicial)
             {
-                if(!nodos.contains(ci.nodo))
+                List<String> lst_busca=Arrays.asList(nodos.split(","));
+                
+                if(lst_busca.indexOf(ci.nodo)==-1)
                     nodos+=ci.nodo+SEPARADOR;
-                if(!nodos.contains(ci.conexion))
+                if(lst_busca.indexOf(ci.conexion)==-1)
                     nodos+=ci.conexion+SEPARADOR;
             }
             nodos=nodos.substring(0, nodos.length()-1);
@@ -240,50 +256,25 @@ public class CutwidthV1
         return nod;
     }
     
-    //C:\Users\USUARIO\Desktop\cutwidth\proyecto_cutwidth\src\main\java\com\mycompany\proyecto_cutwidth\datos.txt
-    private static List<ConexionInicial> leer_archivo()
-    {
-       String directorio=System.getProperty("user.dir");
-       String ruta="\\src\\main\\java\\com\\mycompany\\proyecto_cutwidth\\"+NOMBRE_ARCHIVO;
-       try 
-       {
-            FileReader fr = new FileReader(directorio+ruta);
-            BufferedReader br = new BufferedReader(fr);
-            String linea;
-            List<ConexionInicial> lst_conexion_inicial=new ArrayList<>();
-            while((linea=br.readLine())!=null){
-               //System.out.println("LINEA= "+linea.trim());
-               linea=linea.trim();
-               String vec[]=linea.split(SEPARADOR);
-               lst_conexion_inicial.add(new ConexionInicial(vec[0],vec[1],1));
-            }
-            return lst_conexion_inicial;
-       }
-       catch(Exception ex){
-         System.out.println(ex.getMessage());
-      }
-       return null;
-    }
-    
-    
-    
     //otros recursos
-    public static void contar_particiones(Nodo [] nodos)
+    public static void contar_particiones(Nodo [] nodos,int menor_corte[])
     {
         int k=1;
         int cortes_grafo  []=new int[nodos.length-1];
         for(int x=0;x<nodos.length;x++)
         {
             int []cantidad_particiones_A_B=cantidad_buscar_conexiones(nodos,x,k);
-            System.out.println("("+nodos[x].getValue()+")= "+cantidad_particiones_A_B[0]+"- ("+nodos[k].getValue()+") ="+cantidad_particiones_A_B[1]);
+            //System.out.println("("+nodos[x].getValue()+")= "+cantidad_particiones_A_B[0]+"- ("+nodos[k].getValue()+") ="+cantidad_particiones_A_B[1]);
             cortes_grafo[x]=cantidad_particiones_A_B[1];
-           
             if(k==nodos.length-1)
                 break;
             k++;
-        }
-        System.out.println("LA MAYOR PARTICION ES: "+MAX(cortes_grafo));
-        System.out.println("LA MENOR PARTICION ES: "+MIN(cortes_grafo));
+        }       
+        menor_corte[contador]=Utilidades.MAX(cortes_grafo);
+        contador++;
+        //System.out.println("*********************************************************");
+        //System.out.println("LA MAYOR PARTICION ES: "+Utilidades.MAX(cortes_grafo));
+        //System.out.println("LA MENOR PARTICION ES: "+Utilidades.MIN(cortes_grafo));
     }
     
     public static int[] cantidad_buscar_conexiones(Nodo [] nodos,Integer x,Integer k)
@@ -296,54 +287,4 @@ public class CutwidthV1
         return new int[]{a,b};
     }
 
-    
-   public static int MAX(int [] cortes_grafo )
-   {
-       try
-       {
-           Arrays.sort(cortes_grafo);
-           return cortes_grafo[cortes_grafo.length-1];
-       }
-       catch(Exception ex)
-       {
-           System.out.println(ex.getMessage());
-       }
-       return 0;
-    }
-   
-   
-    public static int MIN(int [] cortes_grafo )
-    {
-       try
-       {
-           Arrays.sort(cortes_grafo);
-           return cortes_grafo[0];
-       }
-       catch(Exception ex)
-       {
-           System.out.println(ex.getMessage());
-       }
-       return 0;
-    }
-   
-    public void COMBINACIONES_BARAJA(List<ConexionInicial> lst_conexion_inicial)
-    {
-        
-        
-        
-        List<Integer[]> lst_integer=new ArrayList<>();
-        Integer[] numeros = { 1, 2, 3, 4, 5, 6, 7 };
-        int cont=10000;
-
-        while(cont>1)
-        {
-            Collections.shuffle(Arrays.asList(numeros));
-            cont--;
-            lst_integer.add(Arrays.copyOf(numeros, numeros.length));
-            //System.out.println(Arrays.toString(numeros));
-
-        }  
-    }
-    
-    
 }
