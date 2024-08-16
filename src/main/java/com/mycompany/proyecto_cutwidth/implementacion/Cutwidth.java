@@ -26,10 +26,10 @@ public class Cutwidth
 {
     public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="datos6.txt";
+    public static String NOMBRE_ARCHIVO="datos9.txt";
     public static Integer CANTIDAD_NODOS;
-    public static Integer POBLACION=100;
-    public static int contador=0;
+    public static Integer POBLACION=1;
+    public static int CONTADOR=0;
     
     public static void main(String[] args) 
     {
@@ -61,6 +61,7 @@ public class Cutwidth
             Cutwidth(matriz_nodos,nodos_indentificador,itd.conjunto_interacciones.get(x));
             contar_particiones(Nodos,menor_corte);
         }
+        
         System.out.println("El menor numero de conexiones entre todos los maximos es: "+Utilidades.MIN(menor_corte));
         
         long endTime = System.currentTimeMillis();
@@ -257,7 +258,7 @@ public class Cutwidth
     }
     
     //otros recursos
-    public static void contar_particiones(Nodo [] nodos,int menor_corte[])
+    public static void contar_particiones(Nodo [] nodos,int[]menor_corte)
     {
         int k=1;
         int cortes_grafo  []=new int[nodos.length-1];
@@ -270,8 +271,8 @@ public class Cutwidth
                 break;
             k++;
         }       
-        menor_corte[contador]=Utilidades.MAX(cortes_grafo);
-        contador++;
+        menor_corte[CONTADOR]=Utilidades.MAX(cortes_grafo);
+        CONTADOR++;
         //System.out.println("*********************************************************");
         //System.out.println("LA MAYOR PARTICION ES: "+Utilidades.MAX(cortes_grafo));
         //System.out.println("LA MENOR PARTICION ES: "+Utilidades.MIN(cortes_grafo));
