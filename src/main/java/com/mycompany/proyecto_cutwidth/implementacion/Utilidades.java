@@ -19,7 +19,8 @@ public class Utilidades
     public static List<ConexionInicial> leer_archivo(String SEPARADOR,String NOMBRE_ARCHIVO)
     {
        String directorio=System.getProperty("user.dir");
-       String ruta="\\src\\main\\java\\com\\mycompany\\proyecto_cutwidth\\"+NOMBRE_ARCHIVO;
+       //String ruta="\\src\\main\\java\\com\\mycompany\\proyecto_cutwidth\\"+NOMBRE_ARCHIVO;
+       String ruta="\\conjuntosDatos\\nn\\"+NOMBRE_ARCHIVO;
        try 
        {
             FileReader fr = new FileReader(directorio+ruta);
@@ -30,7 +31,8 @@ public class Utilidades
                //System.out.println("LINEA= "+linea.trim());
                linea=linea.trim();
                String vec[]=linea.split(SEPARADOR);
-               lst_conexion_inicial.add(new ConexionInicial(vec[0],vec[1],1));
+               if (vec.length>2) continue;
+               lst_conexion_inicial.add(new ConexionInicial(vec[0].trim(),vec[1].trim(),1));
             }
             return lst_conexion_inicial;
        }
