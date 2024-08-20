@@ -93,13 +93,14 @@ public class Cutwidth
                     //pa=particion a ; pb=particion b
                     int pa=0,pb=0;
                     
+                    Nodo nodo=matriz_nodos[x][n];
                     if(n==rango_inicial)
-                        pb=1;
+                        pb=nodo.getPeso();
                     else if(n==matriz_nodos[0].length-1 || n==rango_final)
-                        pa=1;
+                        pa=nodo.getPeso();
                     else{
-                        pa=1;
-                        pb=1;
+                        pa=nodo.getPeso();
+                        pb=nodo.getPeso();
                     }
                     
                     insertar_particiones(matriz_nodos[x][n],pa,pb);
