@@ -2,10 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.proyecto_cutwidth.implementacionVN;
-import static com.mycompany.proyecto_cutwidth.implementacionVN.Cutwidth.SEPARADOR;
-import static com.mycompany.proyecto_cutwidth.implementacionVN.Cutwidth.SEPARADOR_ARCHIVO;
-import com.mycompany.proyecto_cutwidth.ordenamiento_pruebados;
+package com.mycompany.proyecto_cutwidth.implementacionRS;
+import static com.mycompany.proyecto_cutwidth.implementacionRS.Cutwidth.SEPARADOR_ARCHIVO;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;

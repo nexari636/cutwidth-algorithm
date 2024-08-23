@@ -1,11 +1,11 @@
-package com.mycompany.proyecto_cutwidth.implementacionVN;
+package com.mycompany.proyecto_cutwidth.implementacionRS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /**
- *
+ * RECOCIDO SIMULADO
  * @author JHON LETURNE
  */
 public class Cutwidth
@@ -17,6 +17,13 @@ public class Cutwidth
     public static Integer POBLACION=25;
     public static Integer ITERACCIONES=5;
     public static int CONTADOR=0;
+    
+    //RECOCIDO SIMULADO
+    public static Integer TEMPERATURA_INICIAL=100;
+    public static Integer TEMPERATURA_FINAL=13;
+    public static Double ALFA=0.5;
+
+
     
     public static void main(String[] args) 
     {
