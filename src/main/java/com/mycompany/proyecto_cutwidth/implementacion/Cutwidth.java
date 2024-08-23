@@ -1,19 +1,10 @@
 package com.mycompany.proyecto_cutwidth.implementacion;
-/**
- *
- * @author USUARIO
- */
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  *
  * @author JHON LETURNE
@@ -22,7 +13,7 @@ public class Cutwidth
 {
     public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="datos9.txt";
+    public static String NOMBRE_ARCHIVO="datos7.txt";
     public static Integer CANTIDAD_NODOS;
     public static Integer POBLACION=1;
     public static int CONTADOR=0;

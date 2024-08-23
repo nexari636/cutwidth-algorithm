@@ -1,0 +1,235 @@
+package com.mycompany.proyecto_cutwidth.implementacionVN;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+/**
+ *
+ * @author JHON LETURNE
+ */
+public class Cutwidth
+{
+    public static String SEPARADOR_ARCHIVO=" ";
+    public static String SEPARADOR=",";
+    public static String NOMBRE_ARCHIVO="datos9.txt";
+    public static Integer CANTIDAD_NODOS;
+    public static Integer POBLACION=100;
+    public static int CONTADOR=0;
+    
+    public static void main(String[] args) 
+    {
+        long startTime = System.currentTimeMillis();
+        
+        List<ConexionInicial> lst_conexion_inicial=Utilidades.leer_archivo(NOMBRE_ARCHIVO);
+        
+        InteraccionesData itd=new InteraccionesData(lst_conexion_inicial,POBLACION);
+        itd.conexionesBaraja=itd.copy_list_conexiones(lst_conexion_inicial);
+        
+        int menor_corte[]=new int[POBLACION+1]; 
+        
+        String [] nod=Utilidades.nodos_grafo_orden;
+        CANTIDAD_NODOS=nod.length;
+        Map<String, Integer> nodos_indentificador=identificar_nodos(nod);
+                               
+        for(int x=0;x<=POBLACION;x++)
+        {
+            Nodo[]Nodos=crear_nodos(nod);
+            Cutwidth(nodos_indentificador,itd.conexionesBaraja,Nodos);
+            contar_particiones(Nodos,menor_corte);
+            itd.conexionesBaraja.clear();
+            itd.conexionesBaraja=new ArrayList<>();
+            Nodos=null;
+            itd.baraja_lista();
+            
+        }
+        
+        System.out.println("El menor numero de conexiones entre todos los maximos es: "+Utilidades.MIN(menor_corte));
+        
+        long endTime = System.currentTimeMillis();
+        System.out.println("Tardo en ejecutarse= "+((double)(endTime-startTime)/1000));
+        
+    }
+    
+    private static void Cutwidth(Map<String, 
+            Integer> nodos_indentificador,List<ConexionInicial> lst_conexion_inicial,Nodo[] Nodos)
+    {
+        //System.out.println("Inicio cutwidth");
+        for(int x=0;x<Nodos.length;x++)
+        {
+            //System.out.println("asdf");
+            
+            int[] rango_conexion_inicial=obtener_rango(lst_conexion_inicial,Nodos[x].getValue());
+            //System.out.println(rango_conexion_inicial[0]+" - "+rango_conexion_inicial[1]+" - "+Nodos[x].getValue());
+            if(rango_conexion_inicial[0]==-1) continue;
+            for(int i=rango_conexion_inicial[0];i<=rango_conexion_inicial[1];i++)
+            {
+                int n=0;
+                if(lst_conexion_inicial.get(i).nodo.equals(lst_conexion_inicial.get(i).conexion)) continue;
+                
+                int rango_inicial=nodos_indentificador.get(lst_conexion_inicial.get(i).getNodo());
+                int rango_final=nodos_indentificador.get(lst_conexion_inicial.get(i).getConexion());
+                
+                if(rango_inicial>rango_final)
+                {
+                    int aux=rango_inicial;
+                    rango_inicial=rango_final;
+                    rango_final=aux;
+                }
+               
+                for(n=rango_inicial;n<=rango_final;n++)
+                {
+                    
+                    //pa=particion a ; pb=particion b
+                    int pa=0,pb=0;
+                    
+                    Nodo nodo=Nodos[n];
+                    if(n==rango_inicial)
+                        pb=nodo.getPeso();
+                    else if(n==Nodos.length-1 || n==rango_final)
+                        pa=nodo.getPeso();
+                    else{
+                        pa=nodo.getPeso();
+                        pb=nodo.getPeso();
+                    }
+                    
+                    insertar_particiones(Nodos[n],pa,pb);
+                }
+                
+            }
+        }
+        //System.out.println("Fin cutwidth");
+    }
+    
+    //OBTIENE RANGO POR BUSQUEDA BINARIA
+    public static int[] obtener_rango(List<ConexionInicial> lst_conexion_inicial,String valor_buscar)
+    {
+        boolean es_numero=valor_buscar.matches("[0-9,;]*");
+        int pos_inicial=0;
+        int pos_final=lst_conexion_inicial.size()-1;
+        if(es_numero)
+        {
+            int pos_lista=(pos_inicial+pos_final)/2;
+            Boolean encontrado=false;
+            
+            while(pos_inicial<=pos_final)
+            {
+                pos_lista=(pos_inicial+pos_final)/2;
+
+                if(Integer.parseInt(valor_buscar)>Integer.parseInt(lst_conexion_inicial.get(pos_lista).getNodo().trim()))
+                    pos_inicial=pos_lista+1;          
+                else if(Integer.parseInt(valor_buscar)<Integer.parseInt(lst_conexion_inicial.get(pos_lista).getNodo().trim()))
+                    pos_final=pos_lista-1;
+                else{ 
+                   encontrado=true;
+                   break;
+                }
+            }
+            
+            Boolean posI=false;
+            if(encontrado){
+                while(true)
+                {
+                    //System.out.println("sali");
+                    //System.out.println(pos_lista);
+                    if(!posI)
+                    {
+                        if((pos_lista-1)>-1)
+                        {
+                           if(lst_conexion_inicial.get(pos_lista-1).getNodo().trim().equals( valor_buscar))
+                                pos_lista--;
+                            else{
+                                posI=true;
+                                pos_inicial=pos_lista;
+                            } 
+                        }
+                        else{
+                            posI=true;
+                            pos_inicial=pos_lista; 
+                        }
+                    }
+                    else if((pos_lista+1)<=(lst_conexion_inicial.size()-1))
+                    {
+                        if(lst_conexion_inicial.get(pos_lista+1).getNodo().trim().equals(valor_buscar))
+                            pos_lista++;
+                        else
+                        {
+                            pos_final=pos_lista;
+                            break;
+                        }
+                    }else{
+                        
+                        pos_final=pos_lista;
+                        break;
+                    }
+                }
+            }else
+                return new int[]{-1,-1};
+        }else
+            return new int[]{-1,-1};
+        return new int[]{pos_inicial,pos_final};
+    }
+    
+    public static void insertar_particiones(Nodo nodo,int particion_a,int particion_b)
+    {
+        if(particion_a>=1)
+            nodo.setCant_vertices_particionA(nodo.getCant_vertices_particionA()+particion_a);
+                    
+        if(particion_b>=1)
+            nodo.setCant_vertices_particionB(nodo.getCant_vertices_particionB()+particion_b);
+    }
+    
+    private static Nodo[] crear_nodos(String [] nodos)
+    {
+        try
+        {
+            Nodo[]Nodos=new Nodo[CANTIDAD_NODOS];
+            for(int x=0;x<Nodos.length;x++)
+                Nodos[x]=new Nodo(nodos[x],1);
+            return Nodos;
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        return null;
+    }
+    
+    private static Map<String, Integer> identificar_nodos(String [] nodos)
+    {
+        try
+        {
+            Map<String, Integer> nodos_indentificador=new HashMap();
+            for(int x=0;x<nodos.length;x++)
+                nodos_indentificador.put(nodos[x], x);
+            return nodos_indentificador;
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        return null;
+    }
+    
+    //otros recursos
+    public static void contar_particiones(Nodo [] nodos,int[]menor_corte)
+    {
+        int k=1;
+        int mayor=0;
+        for(int x=0;x<nodos.length;x++)
+        {
+            int a=nodos[x].getCant_vertices_particionB();
+            int b=nodos[k].getCant_vertices_particionA();
+          
+            if(a>mayor)
+                mayor=a;
+                      
+            if(k==nodos.length-1)
+                break;
+            k++;
+        }       
+        menor_corte[CONTADOR]=mayor;
+        CONTADOR++;
+    }
+  
+}
