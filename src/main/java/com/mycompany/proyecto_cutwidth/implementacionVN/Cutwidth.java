@@ -12,7 +12,7 @@ public class Cutwidth
 {
     public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="datos5.txt";
+    public static String NOMBRE_ARCHIVO="datos10.txt";
     public static Integer CANTIDAD_NODOS;
     public static Integer POBLACION=25;
     public static Integer ITERACCIONES=5;

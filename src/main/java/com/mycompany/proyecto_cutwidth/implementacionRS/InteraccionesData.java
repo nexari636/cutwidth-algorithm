@@ -6,6 +6,7 @@ package com.mycompany.proyecto_cutwidth.implementacionRS;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -30,26 +31,26 @@ public class InteraccionesData
     {
         try
         {
-            //System.out.println(lst_conexion_inicial.size()+"ddd");
+            LinkedHashSet<ConexionInicial> lst_busca = new LinkedHashSet<>();
+            
             Random ramdom =  SecureRandom.getInstance("SHA1PRNG");
             conexionesBaraja=copy_list_conexiones(lst_conexion_inicial);
-           // lst_conexion_inicial.clear();
             
             Collections.shuffle(conexionesBaraja,ramdom);
-            //List<ConexionInicial> lst_copia=copy_list_conexiones(copia_original);
 
-            for(int x=0;x<conexionesBaraja.size();x++){
-               //System.out.println(lst_conexion_inicial.get(x).nodo+"dddd");
+            for(int x=0;x<conexionesBaraja.size();x++)
                 conexionesBaraja.get(x).nodo=lst_conexion_inicial.get(x).nodo;
-            }
-
+            
+            lst_busca.addAll(conexionesBaraja);
+            conexionesBaraja.clear();
+            conexionesBaraja.addAll(lst_busca);
+            lst_busca.clear();
         }
         catch(Exception ex)
         {
             System.out.println(ex.getMessage());
         }
     }
-    
     
     
     public List<ConexionInicial> copy_list_conexiones(List<ConexionInicial> list_conexionInicial)

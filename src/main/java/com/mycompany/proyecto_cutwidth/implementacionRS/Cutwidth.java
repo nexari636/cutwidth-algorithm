@@ -12,17 +12,19 @@ public class Cutwidth
 {
     public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="datos5.txt";
+    public static String NOMBRE_ARCHIVO="ash292.mtx.txt";
     public static Integer CANTIDAD_NODOS;
-    public static Integer POBLACION=25;
-    public static Integer ITERACCIONES=5;
-    public static int CONTADOR=0;
     
     //RECOCIDO SIMULADO
-    public static Integer TEMPERATURA_INICIAL=100;
-    public static Integer TEMPERATURA_FINAL=13;
-    public static Double ALFA=0.5;
-
+    public static Double TEMPERATURA_INICIAL=100d;
+    public static Double TEMPERATURA_FINAL=13d;
+    public static Integer L=5;
+    public static Double ALFA=0.5d;
+    
+    public static List<ConexionInicial> lst_solucionActual;    
+    public static List<ConexionInicial> lst_solucionCandidata;
+    public static Integer FO_SOLUCION_ACTUAL=0;
+    public static Integer FO_SOLUCION_CANDIDATA=0;
 
     
     public static void main(String[] args) 
@@ -33,31 +35,48 @@ public class Cutwidth
         
         InteraccionesData itd=new InteraccionesData(lst_conexion_inicial);
         itd.conexionesBaraja=itd.copy_list_conexiones(lst_conexion_inicial);
-        
-        int [] menor_corte=null; 
-        
+            
         String [] nod=Utilidades.nodos_grafo_orden;
         CANTIDAD_NODOS=nod.length;
         Map<String, Integer> nodos_indentificador=identificar_nodos(nod);
         
-        for(int i=1;i<=ITERACCIONES;i++)
-        {     
-            System.out.println("INTERACCION= "+i);
-            menor_corte=new int[POBLACION+1];
-            CONTADOR=0;
-            for(int x=0;x<=POBLACION;x++)
+        //SOLUCION INICIAL
+        Nodo[]Nodos=crear_nodos(nod);
+        Cutwidth(nodos_indentificador,itd.conexionesBaraja,Nodos);
+        FO_SOLUCION_ACTUAL=contar_particiones(Nodos);
+        lst_solucionActual=itd.conexionesBaraja;
+        
+        System.out.println("SOLUCION ACTUAL= "+FO_SOLUCION_ACTUAL);
+
+        while(TEMPERATURA_INICIAL>=TEMPERATURA_FINAL)
+        {
+            for(int x=0;x<L;x++)
             {
-                Nodo[]Nodos=crear_nodos(nod);
-                Cutwidth(nodos_indentificador,itd.conexionesBaraja,Nodos);
-                contar_particiones(Nodos,menor_corte);
-                itd.conexionesBaraja.clear();
-                itd.conexionesBaraja=new ArrayList<>();
-                Nodos=null;
+                Nodos=crear_nodos(nod);
                 itd.baraja_lista();
-                System.out.println("SOLUCION GRAFO= "+x+" con valor de corte= "+menor_corte[CONTADOR-1]);
+                Cutwidth(nodos_indentificador,itd.conexionesBaraja,Nodos);
+                FO_SOLUCION_CANDIDATA=contar_particiones(Nodos);
+                lst_solucionCandidata=itd.conexionesBaraja;
+                int DELTA=FO_SOLUCION_CANDIDATA-FO_SOLUCION_ACTUAL;
+                
+                if(DELTA<0)
+                {
+                    FO_SOLUCION_ACTUAL=FO_SOLUCION_CANDIDATA;
+                    lst_solucionActual=itd.conexionesBaraja;
+                }
+                else if(Utilidades.Aleatorio()<Utilidades.probabilidad(DELTA,TEMPERATURA_INICIAL))
+                {
+                    FO_SOLUCION_ACTUAL=FO_SOLUCION_CANDIDATA;
+                    lst_solucionActual=itd.conexionesBaraja;
+                }
+                itd.lst_conexion_inicial=lst_solucionActual;
+                Nodos=null;
+                System.out.println("SOLUCION ACTUAL= "+FO_SOLUCION_ACTUAL);
             }
-            System.out.println("El menor numero de conexiones entre todos los maximos es: "+Utilidades.MIN(menor_corte)+"\n\n");
+            TEMPERATURA_INICIAL=TEMPERATURA_INICIAL*ALFA;
         }
+        
+        System.out.println("El menor numero de conexiones entre todos los maximos es: "+FO_SOLUCION_ACTUAL+"");
 
         long endTime = System.currentTimeMillis();
         System.out.println("Tardo en ejecutarse= "+((double)(endTime-startTime)/1000));
@@ -216,7 +235,7 @@ public class Cutwidth
         return null;
     }
     
-    public static void contar_particiones(Nodo [] nodos,int[]menor_corte)
+    public static int contar_particiones(Nodo [] nodos)
     {
         int mayor=0;
         for (Nodo nodo : nodos) {
@@ -224,8 +243,7 @@ public class Cutwidth
             if(particion_b>mayor)
                 mayor=particion_b;
         }       
-        menor_corte[CONTADOR]=mayor;
-        CONTADOR++;
+        return mayor;
     }
   
 }

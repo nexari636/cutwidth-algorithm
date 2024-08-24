@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.proyecto_cutwidth.implementacionRS;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,5 +35,38 @@ class ConexionInicial
     public Integer getNodoNumero(){
         return Integer.parseInt(nodo);
     }
+    
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash = 17  + Objects.hashCode(this.nodo);
+        hash = 17  + Objects.hashCode(this.conexion)+hash;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ConexionInicial other = (ConexionInicial) obj;
+        
+        if(Objects.equals(this.nodo, other.conexion) && Objects.equals(this.conexion, other.nodo))
+            return true;
+        
+        if (!Objects.equals(this.nodo, other.nodo)) 
+            return false;
+        
+        return Objects.equals(this.conexion, other.conexion);
+    }
+    
+    
 
 }

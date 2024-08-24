@@ -6,11 +6,14 @@ package com.mycompany.proyecto_cutwidth.implementacionRS;
 import static com.mycompany.proyecto_cutwidth.implementacionRS.Cutwidth.SEPARADOR_ARCHIVO;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -120,10 +123,24 @@ public class Utilidades
     }
     
     
-    public static void Imprimir_Nodos()
+    public static Double probabilidad(Integer DELTA,Double temperatura)
     {
-        
+        return Math.exp(-DELTA/temperatura);
     }
+    
+    public static double Aleatorio()
+    {
+        try{
+            Random ramdom =  SecureRandom.getInstance("SHA1PRNG");
+            return ramdom.nextDouble();
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            return -1;
+        }
+    }
+    
     
     
     
