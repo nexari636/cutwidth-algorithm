@@ -3,9 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.proyecto_cutwidth.implementacionVN;
-import static com.mycompany.proyecto_cutwidth.implementacionVN.Cutwidth.SEPARADOR;
 import static com.mycompany.proyecto_cutwidth.implementacionVN.Cutwidth.SEPARADOR_ARCHIVO;
-import com.mycompany.proyecto_cutwidth.ordenamiento_pruebados;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -20,9 +18,7 @@ import java.util.List;
  */
 public class Utilidades 
 {
-    
     public static String[] nodos_grafo_orden;
-    
     
     public static List<ConexionInicial> leer_archivo(String NOMBRE_ARCHIVO)
     {
@@ -91,20 +87,19 @@ public class Utilidades
     
     public static void ordenar_conexion_inicial(List<ConexionInicial> lst_con)
     {
-        boolean es_numero=lst_con.get(0).nodo.matches("[0-9,;]*");  //FALSE SI ES STRING Y TRUE SI ES NUMERICO
+        boolean es_numero=Utilidades.verificar_numero(lst_con.get(0).nodo);
         
         if(es_numero)
             lst_con.sort(Comparator.comparing(ConexionInicial::getNodoNumero));
         else
             lst_con.sort(Comparator.comparing(ConexionInicial::getNodoLetra));
-
     }
     
 
     private static String[] ordenar_vector(String [] nodos)
     {
         String [] nod=nodos;
-        boolean es_numero=nodos[0].matches("[0-9,;]*"); //FALSE SI ES STRING Y TRUE SI ES NUMERICO
+        boolean es_numero=Utilidades.verificar_numero(nodos[0]);
         if(es_numero)
         {
             int[] nodos_integer = Arrays.stream(nod).mapToInt(Integer::parseInt).toArray();
@@ -122,11 +117,10 @@ public class Utilidades
     }
     
     
-    public static void Imprimir_Nodos()
+    public static Boolean verificar_numero(String cadena)
     {
-        
+        return cadena.matches("[0-9,;]*"); //FALSE SI ES STRING Y TRUE SI ES NUMERICO
     }
     
-    
-    
+
 }

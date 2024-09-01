@@ -27,7 +27,6 @@ public class InteraccionesData
     {
         this.lst_conexion_inicial=lst_conexion_inicial;
         this.conexionesBaraja=new ArrayList<>();
-        //baraja_lista();
     }
 
     public void baraja_lista()

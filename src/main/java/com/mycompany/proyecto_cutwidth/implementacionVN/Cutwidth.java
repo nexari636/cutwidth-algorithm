@@ -12,15 +12,27 @@ public class Cutwidth
 {
     public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="datos10.txt";
+    public static String NOMBRE_ARCHIVO="letras.txt";
     public static Integer CANTIDAD_NODOS;
     public static Integer POBLACION=25;
     public static Integer ITERACCIONES=5;
     public static int CONTADOR=0;
     
+    public static List<ConexionInicial> lst_solucionActual;  
+    public static Nodo[]NodosActualSolucion;
+    
+    public static List<ConexionInicial> lst_solucionActualGLOBAL;  
+    public static Nodo[]NodosActualSolucionGLOBAL;
+    
+    
     public static void main(String[] args) 
     {
+        
         long startTime = System.currentTimeMillis();
+        
+        int menor=999999999;        
+        int menorGlobal=999999999;
+        int num=0;
         
         List<ConexionInicial> lst_conexion_inicial=Utilidades.leer_archivo(NOMBRE_ARCHIVO);
         
@@ -42,16 +54,45 @@ public class Cutwidth
             {
                 Nodo[]Nodos=crear_nodos(nod);
                 Cutwidth(nodos_indentificador,itd.conexionesBaraja,Nodos);
-                contar_particiones(Nodos,menor_corte);
+                num=contar_particiones(Nodos,menor_corte);
+                
+                
+                if(num<menor){
+                    menor=num;
+                    lst_solucionActual=itd.copy_list_conexiones(itd.conexionesBaraja);
+                    NodosActualSolucion=Nodos.clone();
+                }
+
                 itd.conexionesBaraja.clear();
                 itd.conexionesBaraja=new ArrayList<>();
-                Nodos=null;
                 itd.baraja_lista();
                 System.out.println("SOLUCION GRAFO= "+x+" con valor de corte= "+menor_corte[CONTADOR-1]);
+
+                Nodos=null;
+
             }
+            if(menor<menorGlobal)
+            {
+                menorGlobal=menor;
+                lst_solucionActualGLOBAL=itd.copy_list_conexiones(lst_solucionActual);
+                NodosActualSolucionGLOBAL=NodosActualSolucion.clone();             
+            }
+            num=0;
+            menor=999999999;
+            lst_solucionActual.clear();
+            NodosActualSolucion=null;
+            
             System.out.println("El menor numero de conexiones entre todos los maximos es: "+Utilidades.MIN(menor_corte)+"\n\n");
         }
 
+
+        for(ConexionInicial ci: lst_solucionActualGLOBAL)
+        {
+            System.out.println(ci.nodo+" - "+ci.conexion);
+        }
+        System.out.println("El cuwi mas pepa es de valor: "+menorGlobal);
+
+        
         long endTime = System.currentTimeMillis();
         System.out.println("Tardo en ejecutarse= "+((double)(endTime-startTime)/1000));
         
@@ -101,12 +142,13 @@ public class Cutwidth
         //System.out.println("Fin cutwidth");
     }
     
-    //OBTIENE RANGO POR BUSQUEDA BINARIA
+    //OBTIENE RANGO POR BUSQUEDA BINARIA (PARA CONJUNTOS DE NUMEROS) y BUSQUEDA NORMAL (SOLO PARA CONJUNTOS DE LETRAS)
     public static int[] obtener_rango(List<ConexionInicial> lst_conexion_inicial,String valor_buscar)
     {
-        boolean es_numero=valor_buscar.matches("[0-9,;]*");
+        boolean es_numero=Utilidades.verificar_numero(valor_buscar);
         int pos_inicial=0;
         int pos_final=lst_conexion_inicial.size()-1;
+        Boolean posI=false;
         if(es_numero)
         {
             int pos_lista=(pos_inicial+pos_final)/2;
@@ -126,7 +168,7 @@ public class Cutwidth
                 }
             }
             
-            Boolean posI=false;
+            
             if(encontrado){
                 while(true)
                 {
@@ -164,7 +206,30 @@ public class Cutwidth
             }else
                 return new int[]{-1,-1};
         }else
-            return new int[]{-1,-1};
+        {
+            //letras
+            for(int x=0;x<lst_conexion_inicial.size();x++)
+            {
+                if(!posI)
+                {
+                    if(lst_conexion_inicial.get(x).nodo.equals(valor_buscar))
+                    {
+                        posI=true;
+                        pos_inicial=x;
+                        pos_final=x;
+                    }
+                }
+                else
+                {
+                    if(!lst_conexion_inicial.get(x).nodo.equals(valor_buscar))
+                    {
+                        pos_final=x-1;
+                        break;
+                    }
+                    pos_final=x;
+                }
+            }
+        }
         return new int[]{pos_inicial,pos_final};
     }
     
@@ -209,7 +274,7 @@ public class Cutwidth
         return null;
     }
     
-    public static void contar_particiones(Nodo [] nodos,int[]menor_corte)
+    public static int contar_particiones(Nodo [] nodos,int[]menor_corte)
     {
         int mayor=0;
         for (Nodo nodo : nodos) {
@@ -219,6 +284,7 @@ public class Cutwidth
         }       
         menor_corte[CONTADOR]=mayor;
         CONTADOR++;
+        return mayor;
     }
   
 }

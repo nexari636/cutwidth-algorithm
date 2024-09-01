@@ -12,7 +12,7 @@ public class Cutwidth
 {
     public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="ash292.mtx.txt";
+    public static String NOMBRE_ARCHIVO="letras.txt";
     public static Integer CANTIDAD_NODOS;
     
     //RECOCIDO SIMULADO
@@ -130,9 +130,11 @@ public class Cutwidth
     //OBTIENE RANGO POR BUSQUEDA BINARIA
     public static int[] obtener_rango(List<ConexionInicial> lst_conexion_inicial,String valor_buscar)
     {
-        boolean es_numero=valor_buscar.matches("[0-9,;]*");
+        boolean es_numero=Utilidades.verificar_numero(valor_buscar);
         int pos_inicial=0;
         int pos_final=lst_conexion_inicial.size()-1;
+        Boolean posI=false;
+        
         if(es_numero)
         {
             int pos_lista=(pos_inicial+pos_final)/2;
@@ -152,7 +154,6 @@ public class Cutwidth
                 }
             }
             
-            Boolean posI=false;
             if(encontrado){
                 while(true)
                 {
@@ -190,7 +191,30 @@ public class Cutwidth
             }else
                 return new int[]{-1,-1};
         }else
-            return new int[]{-1,-1};
+        {
+            //letras
+            for(int x=0;x<lst_conexion_inicial.size();x++)
+            {
+                if(!posI)
+                {
+                    if(lst_conexion_inicial.get(x).nodo.equals(valor_buscar))
+                    {
+                        posI=true;
+                        pos_inicial=x;
+                        pos_final=x;
+                    }
+                }
+                else
+                {
+                    if(!lst_conexion_inicial.get(x).nodo.equals(valor_buscar))
+                    {
+                        pos_final=x-1;
+                        break;
+                    }
+                    pos_final=x;
+                }
+            }        
+        }
         return new int[]{pos_inicial,pos_final};
     }
     

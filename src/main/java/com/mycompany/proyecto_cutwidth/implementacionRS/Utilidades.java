@@ -6,7 +6,6 @@ package com.mycompany.proyecto_cutwidth.implementacionRS;
 import static com.mycompany.proyecto_cutwidth.implementacionRS.Cutwidth.SEPARADOR_ARCHIVO;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,7 +91,7 @@ public class Utilidades
     
     public static void ordenar_conexion_inicial(List<ConexionInicial> lst_con)
     {
-        boolean es_numero=lst_con.get(0).nodo.matches("[0-9,;]*");  //FALSE SI ES STRING Y TRUE SI ES NUMERICO
+        boolean es_numero=Utilidades.verificar_numero(lst_con.get(0).nodo);
         
         if(es_numero)
             lst_con.sort(Comparator.comparing(ConexionInicial::getNodoNumero));
@@ -105,7 +104,7 @@ public class Utilidades
     private static String[] ordenar_vector(String [] nodos)
     {
         String [] nod=nodos;
-        boolean es_numero=nodos[0].matches("[0-9,;]*"); //FALSE SI ES STRING Y TRUE SI ES NUMERICO
+        boolean es_numero=Utilidades.verificar_numero(nodos[0]);
         if(es_numero)
         {
             int[] nodos_integer = Arrays.stream(nod).mapToInt(Integer::parseInt).toArray();
@@ -122,6 +121,10 @@ public class Utilidades
         return nod;
     }
     
+    public static Boolean verificar_numero(String cadena)
+    {
+        return cadena.matches("[0-9,;]*"); //FALSE SI ES STRING Y TRUE SI ES NUMERICO
+    }
     
     public static Double probabilidad(Integer DELTA,Double temperatura)
     {
