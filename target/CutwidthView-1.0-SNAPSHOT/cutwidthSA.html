@@ -1,0 +1,49 @@
+
+<div class="accordion margen_acordeon" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Formulario de datos
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <div class="margen">
+                <form name="form" ng-submit="enviar_data(form)">
+                    <div class="mb-3">
+                        <label for="temperaturaI" class="form-label">Temperatura Inicial</label>
+                        <input type="number" class="form-control" id="temperaturaI" aria-describedby="temperaturaI" name="temperaturaI" ng-model="temperaturaI">
+                        <div id="temperaturaI" class="form-text">Temperatura con que inicia el problema</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="temperaturaF" class="form-label">Temperatura final</label>
+                        <input type="number" class="form-control" id="temperaturaF" aria-describedby="temperaturaF" name="temperaturaF" ng-model="temperaturaF">
+                        <div id="temperaturaF" class="form-text">Temperatura con que finaliza el problema</div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="bajar_temperatura" class="form-label">L</label>
+                      <input type="number" class="form-control" id="bajar_temperatura" aria-describedby="bajar_temperatura" name="bajar_temperatura" ng-model="bajar_temperatura">
+                      <div id="bajar_temperatura" class="form-text">Tiempo en el que va a permanecer en una temperatura</div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="alfa" class="form-label">Alfa</label>
+                      <input type="number" class="form-control" id="alfa" aria-describedby="alfa" step="any" name="alfa" ng-model="alfa">
+                      <div id="alfa" class="form-text">Mecanismo para bajar la temperatura ejem. 0.5 </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="archivo" class="form-label">Conjunto de datos</label>
+                        <input type="file" class="form-control" id="archivo" aria-describedby="archivo">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Resolver</button>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+    <div id="myDiagramDiv" class="DiagramDiv"></div>
+
+  
+

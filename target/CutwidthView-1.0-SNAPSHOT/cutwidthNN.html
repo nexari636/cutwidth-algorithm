@@ -1,0 +1,37 @@
+
+<div class="accordion margen_acordeon" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Formulario de datos
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <div class="margen">
+                <form name="form" ng-submit="enviar_data(form)">
+                    <div class="mb-3">
+                        <label for="poblacion" class="form-label">Poblacion</label>
+                        <input type="number" class="form-control" id="poblacion" aria-describedby="poblacion" name="poblacion" ng-model="poblacion">
+                    </div>
+                    <div class="mb-3">
+                        <label for="interacciones" class="form-label">Interacciones</label>
+                        <input type="number" class="form-control" id="interacciones" aria-describedby="interacciones" name="interacciones" ng-model="interacciones">
+                    </div>
+                    <div class="mb-3">
+                        <label for="archivo" class="form-label">Conjunto de datos</label>
+                        <input type="file" class="form-control" id="archivo" aria-describedby="archivo">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Resolver</button>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+    <div id="myDiagramDiv" class="DiagramDiv"></div>
+
+  
+
