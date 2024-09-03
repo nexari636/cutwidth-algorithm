@@ -22,7 +22,7 @@ public class pruebarefarray {
         //arraycp=Arrays.copyOf(array, array.length);
         arraycp=array.clone();
 
-        array=null;
+        array[1]=900;
         for(int a: arraycp)
         {
             System.out.println(a);

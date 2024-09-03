@@ -12,14 +12,14 @@ public class Cutwidth
 {
     public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="letras.txt";
+    public static String NOMBRE_ARCHIVO="datos3.txt";
     public static Integer CANTIDAD_NODOS;
     
     //RECOCIDO SIMULADO
-    public static Double TEMPERATURA_INICIAL=100d;
+    public static Double TEMPERATURA_INICIAL=50d;
     public static Double TEMPERATURA_FINAL=13d;
     public static Integer L=5;
-    public static Double ALFA=0.5d;
+    public static Double ALFA=0.8d;
     
     public static List<ConexionInicial> lst_solucionActual;    
     public static List<ConexionInicial> lst_solucionCandidata;
@@ -44,7 +44,7 @@ public class Cutwidth
         Nodo[]Nodos=crear_nodos(nod);
         Cutwidth(nodos_indentificador,itd.conexionesBaraja,Nodos);
         FO_SOLUCION_ACTUAL=contar_particiones(Nodos);
-        lst_solucionActual=itd.conexionesBaraja;
+        lst_solucionActual=itd.copy_list_conexiones(itd.conexionesBaraja);
         
         System.out.println("SOLUCION ACTUAL= "+FO_SOLUCION_ACTUAL);
 
@@ -59,17 +59,12 @@ public class Cutwidth
                 lst_solucionCandidata=itd.conexionesBaraja;
                 int DELTA=FO_SOLUCION_CANDIDATA-FO_SOLUCION_ACTUAL;
                 
-                if(DELTA<0)
+                if(DELTA<0 || Utilidades.Aleatorio()<Utilidades.probabilidad(DELTA,TEMPERATURA_INICIAL))
                 {
                     FO_SOLUCION_ACTUAL=FO_SOLUCION_CANDIDATA;
                     lst_solucionActual=itd.conexionesBaraja;
+                    itd.lst_conexion_inicial=lst_solucionActual;
                 }
-                else if(Utilidades.Aleatorio()<Utilidades.probabilidad(DELTA,TEMPERATURA_INICIAL))
-                {
-                    FO_SOLUCION_ACTUAL=FO_SOLUCION_CANDIDATA;
-                    lst_solucionActual=itd.conexionesBaraja;
-                }
-                itd.lst_conexion_inicial=lst_solucionActual;
                 Nodos=null;
                 System.out.println("SOLUCION ACTUAL= "+FO_SOLUCION_ACTUAL);
             }

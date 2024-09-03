@@ -32,6 +32,7 @@ class ConexionInicial
     @Override
     public int hashCode() {
         int hash = 0;
+        System.out.println(Objects.hashCode(this.nodo)+" sss");
         hash = 17  + Objects.hashCode(this.nodo);
         hash = 17  + Objects.hashCode(this.conexion)+hash;
         return hash;
@@ -49,14 +50,18 @@ class ConexionInicial
             return false;
         }
         final ConexionInicial other = (ConexionInicial) obj;
+//        
+//        if(Objects.equals(this.nodo, other.conexion) && Objects.equals(this.conexion, other.nodo))
+//            return true;
+//        
+//        if (!Objects.equals(this.nodo, other.nodo)) 
+//            return false;
+//        
+//        return Objects.equals(this.conexion, other.conexion);
         
-        if(Objects.equals(this.nodo, other.conexion) && Objects.equals(this.conexion, other.nodo))
-            return true;
-        
-        if (!Objects.equals(this.nodo, other.nodo)) 
-            return false;
-        
-        return Objects.equals(this.conexion, other.conexion);
+      
+
+        return Objects.equals(this.nodo, other.conexion) && Objects.equals(this.conexion, other.nodo);
     }
     
     

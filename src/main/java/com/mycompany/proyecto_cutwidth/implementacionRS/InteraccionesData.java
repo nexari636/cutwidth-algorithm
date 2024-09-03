@@ -31,24 +31,31 @@ public class InteraccionesData
     {
         try
         {
-            LinkedHashSet<ConexionInicial> lst_busca = new LinkedHashSet<>();
-            
-            Random ramdom =  SecureRandom.getInstance("SHA1PRNG");
-            conexionesBaraja=copy_list_conexiones(lst_conexion_inicial);
-            
-            Collections.shuffle(conexionesBaraja,ramdom);
+            do
+            {
+                LinkedHashSet<ConexionInicial> lst_busca = new LinkedHashSet<>();
 
-            for(int x=0;x<conexionesBaraja.size();x++)
-                conexionesBaraja.get(x).nodo=lst_conexion_inicial.get(x).nodo;
-            
-            lst_busca.addAll(conexionesBaraja);
-            conexionesBaraja.clear();
-            conexionesBaraja.addAll(lst_busca);
-            lst_busca.clear();
+                Random ramdom =  SecureRandom.getInstance("SHA1PRNG");
+                conexionesBaraja=copy_list_conexiones(lst_conexion_inicial);
+
+                Collections.shuffle(conexionesBaraja,ramdom);
+
+                for(int x=0;x<lst_conexion_inicial.size();x++)
+                    conexionesBaraja.get(x).nodo=lst_conexion_inicial.get(x).nodo;
+
+                conexionesBaraja.removeIf(obj-> (obj.nodo.equals(obj.conexion)));
+
+                lst_busca.addAll(conexionesBaraja);
+                conexionesBaraja.clear();
+                conexionesBaraja.addAll(lst_busca);
+                lst_busca.clear();
+            }
+            while(conexionesBaraja.size()<=0);
+            //Utilidades.ordenar_conexion_inicial(conexionesBaraja);
         }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage()+"EEEE");
         }
     }
     

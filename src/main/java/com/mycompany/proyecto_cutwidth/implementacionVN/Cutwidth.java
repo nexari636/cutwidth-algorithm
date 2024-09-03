@@ -12,9 +12,9 @@ public class Cutwidth
 {
     public static String SEPARADOR_ARCHIVO=" ";
     public static String SEPARADOR=",";
-    public static String NOMBRE_ARCHIVO="letras.txt";
+    public static String NOMBRE_ARCHIVO="662_bus.mtx.txt";
     public static Integer CANTIDAD_NODOS;
-    public static Integer POBLACION=25;
+    public static Integer POBLACION=1000;
     public static Integer ITERACCIONES=5;
     public static int CONTADOR=0;
     
@@ -90,12 +90,10 @@ public class Cutwidth
         {
             System.out.println(ci.nodo+" - "+ci.conexion);
         }
-        System.out.println("El cuwi mas pepa es de valor: "+menorGlobal);
+        System.out.println("El cutwidth mejor encontrado es de valor: "+menorGlobal);
 
-        
         long endTime = System.currentTimeMillis();
-        System.out.println("Tardo en ejecutarse= "+((double)(endTime-startTime)/1000));
-        
+        System.out.println("Tardo en ejecutarse= "+((double)(endTime-startTime)/1000));  
     }
     
     private static void Cutwidth(Map<String, 

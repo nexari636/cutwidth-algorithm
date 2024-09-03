@@ -23,7 +23,7 @@ public class Utilidades
     public static List<ConexionInicial> leer_archivo(String NOMBRE_ARCHIVO)
     {
        String directorio=System.getProperty("user.dir");
-       String ruta="\\conjuntosDatos\\nn\\"+NOMBRE_ARCHIVO;
+       String ruta="\\conjuntosDatos\\"+NOMBRE_ARCHIVO;
        HashSet<String> lst_busca = new HashSet<String>();
        try 
        {

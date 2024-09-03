@@ -20,8 +20,8 @@ public class prueba_objetos_iguales {
      */
     public static void main(String[] args) 
     {
-        ConexionInicial ciuno=new ConexionInicial("1","6",1);        
-        ConexionInicial cidos=new ConexionInicial("6","9",1);
+        ConexionInicial ciuno=new ConexionInicial("1","1",1);        
+        ConexionInicial cidos=new ConexionInicial("6","1",1);
         
         System.out.println("HASH ciuno= "+ciuno.hashCode());
         System.out.println("HASH ciuno= "+cidos.hashCode());

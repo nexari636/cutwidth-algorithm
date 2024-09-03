@@ -61,11 +61,8 @@ class ConexionInicial
         
         if(Objects.equals(this.nodo, other.conexion) && Objects.equals(this.conexion, other.nodo))
             return true;
-        
-        if (!Objects.equals(this.nodo, other.nodo)) 
-            return false;
-        
-        return Objects.equals(this.conexion, other.conexion);
+  
+        return Objects.equals(this.nodo, other.nodo) && Objects.equals(this.conexion, other.conexion);
     }
     
     
