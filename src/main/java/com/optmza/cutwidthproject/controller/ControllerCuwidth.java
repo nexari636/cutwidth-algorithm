@@ -46,6 +46,7 @@ public class ControllerCuwidth
                 response.put("nodos", scut.getNod());
                 response.put("conexion", scut.getLst_solucionActualGLOBAL());
                 response.put("solucion", scut.getNodosActualSolucionGLOBAL());
+                response.put("mejorCorte", scut.getMenorGlobal());
             }
             else
             {
@@ -79,6 +80,7 @@ public class ControllerCuwidth
                 response.put("nodos", scut.getNod());
                 response.put("conexion", scut.getLst_solucionActual());
                 response.put("solucion", scut.getNodosActualSolucionGLOBAL());
+                response.put("mejorCorte", scut.getFO_SOLUCION_ACTUAL());
             }
             else
             {

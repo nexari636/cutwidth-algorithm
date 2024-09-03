@@ -25,6 +25,7 @@ public class Scutwidth
     Integer POBLACION=25;
     Integer ITERACCIONES=5;
     public static int CONTADOR=0;
+    int menorGlobal=0;
     
     //SOLO WEB
     public Nodo[]NodosActualSolucion;
@@ -51,6 +52,7 @@ public class Scutwidth
         this.POBLACION=poblacion;
         this.ITERACCIONES=iteracciones;
         this.CONTADOR=0;
+        this.menorGlobal=0;
         resolver_normal();
     }
     
@@ -83,7 +85,15 @@ public class Scutwidth
         return nod;
     }
 
-   
+    public Integer getFO_SOLUCION_ACTUAL() {
+        return FO_SOLUCION_ACTUAL;
+    }
+
+    public int getMenorGlobal() {
+        return menorGlobal;
+    }
+
+
     public void resolver_recocido_simulado()
     {
         InteraccionesData itd=new InteraccionesData(lst_conexion_inicial);
@@ -131,8 +141,7 @@ public class Scutwidth
     
     public void resolver_normal()
     {
-        int menor=999999999;        
-        int menorGlobal=999999999;
+        int menor=0;        
         int num=0;
         
         InteraccionesData itd=new InteraccionesData(lst_conexion_inicial);
@@ -151,9 +160,9 @@ public class Scutwidth
             {
                 Nodo[]Nodos=crear_nodos(nod);
                 Cutwidth(nodos_indentificador,itd.getConexionesBaraja(),Nodos);
-                contar_particiones(Nodos,menor_corte);
+                num=contar_particiones(Nodos,menor_corte);
                 
-                 if(num<menor){
+                 if(num<menor || menor==0){
                     menor=num;
                     lst_solucionActual=itd.copy_list_conexiones(itd.getConexionesBaraja());
                     NodosActualSolucion=Nodos.clone();
@@ -164,16 +173,19 @@ public class Scutwidth
                 itd.setConexionesBaraja(new ArrayList<>());
                 Nodos=null;
                 itd.baraja_lista();
+                System.out.println("SOLUCION GRAFO= " + x + " con valor de corte= " + num +" -- "+menor);
+
             }
             
-            if(menor<menorGlobal)
+            if(menor<menorGlobal || i==1)
             {
                 menorGlobal=menor;
                 lst_solucionActualGLOBAL=itd.copy_list_conexiones(lst_solucionActual);
                 NodosActualSolucionGLOBAL=NodosActualSolucion.clone();             
             }
+            System.out.println("MENOR GLOBAL= "+menorGlobal);
             num=0;
-            menor=999999999;
+            menor=0;
             lst_solucionActual.clear();
             NodosActualSolucion=null;    
         }
@@ -366,7 +378,7 @@ public class Scutwidth
         return mayor;
     }
     
-    public static void contar_particiones(Nodo [] nodos,int[]menor_corte)
+    public static int contar_particiones(Nodo [] nodos,int[]menor_corte)
     {
         int mayor=0;
         for (Nodo nodo : nodos) {
@@ -376,6 +388,7 @@ public class Scutwidth
         }       
         menor_corte[CONTADOR]=mayor;
         CONTADOR++;
+        return mayor;
     }
     
     
