@@ -97,9 +97,10 @@ public class Scutwidth
         Nodo[]Nodos=crear_nodos(nod);
         Cutwidth(nodos_indentificador,itd.getConexionesBaraja(),Nodos);
         FO_SOLUCION_ACTUAL=contar_particiones(Nodos);
-        lst_solucionActual=itd.getConexionesBaraja();
+        lst_solucionActual=itd.copy_list_conexiones(itd.getConexionesBaraja());
+        NodosActualSolucionGLOBAL=Nodos.clone();
         
-        while(TEMPERATURA_INICIAL>=TEMPERATURA_FINAL)
+        while(TEMPERATURA_INICIAL>=TEMPERATURA_FINAL && true)
         {
             for(int x=0;x<L;x++)
             {
@@ -112,12 +113,14 @@ public class Scutwidth
                 
                 if(DELTA<0 || Utilidades.Aleatorio()<Utilidades.probabilidad(DELTA,TEMPERATURA_INICIAL))
                 {
+                    lst_solucionActual.clear();
+                    NodosActualSolucionGLOBAL=null;
                     FO_SOLUCION_ACTUAL=FO_SOLUCION_CANDIDATA;
-                    lst_solucionActual=itd.getConexionesBaraja();
+                    lst_solucionActual=itd.copy_list_conexiones(lst_solucionCandidata);
                     NodosActualSolucionGLOBAL=Nodos.clone(); //web
+                    itd.setLst_conexion_inicial(lst_solucionActual);
                 }
-               
-                itd.setLst_conexion_inicial(lst_solucionActual);
+
                 Nodos=null;
                 System.out.println("SOLUCION ACTUAL= "+FO_SOLUCION_ACTUAL);
             }
@@ -187,7 +190,7 @@ public class Scutwidth
             for(int i=rango_conexion_inicial[0];i<=rango_conexion_inicial[1];i++)
             {
                 int n=0;
-                if(lst_conexion_inicial.get(i).getNodo().equals(lst_conexion_inicial.get(i).getConexion())) continue;
+                //if(lst_conexion_inicial.get(i).getNodo().equals(lst_conexion_inicial.get(i).getConexion())) continue;
                 
                 int rango_inicial=nodos_indentificador.get(lst_conexion_inicial.get(i).getNodo());
                 int rango_final=nodos_indentificador.get(lst_conexion_inicial.get(i).getConexion());
