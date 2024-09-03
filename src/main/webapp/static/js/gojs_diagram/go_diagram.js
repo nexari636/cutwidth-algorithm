@@ -6,7 +6,6 @@ let array_Nodos=[]
 let array_Conexiones=[]
 let myDiagram=null;
 
-
 function init_diagram()
 {
     myDiagram = new go.Diagram(
@@ -23,24 +22,13 @@ function init_diagram()
     ).bind("location", "loc", go.Point.parse);
 
     myDiagram.linkTemplate =
-    new go.Link({ curve: go.Curve.Bezier,routing: go.Routing.AvoidsNodes})      
+    new go.Link({ curve: go.Curve.Bezier,routing: go.Routing.AvoidsNodes, corner: 100})      
       .add(
         new go.Shape({ strokeWidth: 5 })  
     );
 
 }
 
-function limpiar_diagrama()
-{
-    POSx=0;
-    Posy=0;
-    POSx_AUX=POSx;
-    tamanio_separacion_nodos=100;
-    array_Nodos=[];
-    array_Conexiones=[];     
-    myDiagram.div = null;
-    myDiagram=null;
-}
 
 function crear_nodos(nodox1,corte,bandera_ultimo)
 {
@@ -62,7 +50,7 @@ function agregar_corte(posXant,postXact,cantNodoCorte)
     new go.Part("Vertical",{position: new go.Point(((posXant+postXact)/2)-25/2, (-150))})
     .add(
       new go.TextBlock({ text: cantNodoCorte,stroke: "#000",font: "bold 30pt serif"}),
-      new go.Shape("LineV", { strokeWidth: 5, stroke: "#0769B2", width: 20, height: 5000, margin: 0, fill: null }),
+      new go.Shape("LineV", { strokeWidth: 5, stroke: "#0769B2", width: 20, height: 8000, margin: 0, fill: null }),
     
     ));
 }
@@ -71,4 +59,18 @@ function asignar_nodos_diagrama()
 {
   myDiagram.model = new go.GraphLinksModel(array_Nodos,array_Conexiones);
   console.log(myDiagram.model.nodeDataArray.loc);
+}
+
+
+function limpiar_diagrama()
+{
+    POSx=0;
+    Posy=0;
+    POSx_AUX=POSx;
+    tamanio_separacion_nodos=100;
+    array_Nodos=[];
+    array_Conexiones=[];     
+    myDiagram.div = null;
+    myDiagram=null;
+    init_diagram();
 }

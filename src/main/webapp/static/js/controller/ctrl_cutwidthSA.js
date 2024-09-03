@@ -2,20 +2,23 @@ angular.module("app")
 .controller("rest_controller_cutsa", function ($scope, $http) 
 {
 
-
     $(document).ready(function ()
     {
         init_diagram();
+        limpiar_diagrama();
     });
 
     $scope.archivo=null;
 
     $scope.enviar_data=(form)=>
     {
+        limpiar_diagrama();
         console.log(form);
         $scope.archivo=$scope.obtener_archivos("archivo");
 
-        if(form.$valid)
+        if($scope.archivo!=null && form.temperaturaI.$viewValue!=undefined 
+            && form.temperaturaF.$viewValue!=undefined && form.bajar_temperatura.$viewValue!=undefined
+            && form.alfa.$viewValue!=undefined)
         {
             let formData=new FormData();
             formData.append("file",$scope.archivo);
@@ -44,18 +47,22 @@ angular.module("app")
                             x++;
                         }
                             
-                        
                         for(let nodo of data.conexion)           
                             crear_conexiones(nodo.nodo,nodo.conexion);
                         asignar_nodos_diagrama();
+
+                        toaskActive("La tarea fue completada con exito");
+
                     });
                 },
                 error: function (objXMLHttpRequest) {
                     console.log("error: ", objXMLHttpRequest);
+                    toaskActive("Ha ocurrido un error en el sistema");
                 }
             });
         }else{
             console.log("Error los campos estan incompletos");
+            toaskActive("Error campos incompletos");
         }
     } 
 
