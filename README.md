@@ -12,6 +12,7 @@ Este proyecto implementa el **Algoritmo Cutwidth**, cuyo propósito es calcular 
 Para ejecutar este proyecto, asegúrate de tener instalada la siguiente tecnología:
 - Java (JDK 19)
 - NetBeans
+
 Tambien cuenta con version web la cual se encuentra divida en Servidor y Vista utiliza las siguientes tecnologias:
 - Java (JDK 11)
 - AngularJS
