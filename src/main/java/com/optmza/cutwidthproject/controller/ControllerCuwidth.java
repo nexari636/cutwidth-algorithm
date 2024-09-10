@@ -37,11 +37,11 @@ public class ControllerCuwidth
         Map<String,Object> response=new HashMap();
         try
         {
-            if(paramapi.getInteracciones()!=0 && paramapi.getPoblacion()!=0)
+            if(paramapi.getInteracciones()!=0 && paramapi.getMuestra()!=0)
             {
                 List<ConexionInicial> lst_conexion_inicial=Utilidades.leer_archivo_web(file.getBytes());
-                Scutwidth scut=new Scutwidth(lst_conexion_inicial,paramapi.getPoblacion(),paramapi.getInteracciones());
-                System.out.println(paramapi.getPoblacion());            
+                Scutwidth scut=new Scutwidth(lst_conexion_inicial,paramapi.getMuestra(),paramapi.getInteracciones());
+                System.out.println(paramapi.getMuestra());            
                 System.out.println(paramapi.getInteracciones());
                 response.put("nodos", scut.getNod());
                 response.put("conexion", scut.getLst_solucionActualGLOBAL());
@@ -56,6 +56,7 @@ public class ControllerCuwidth
         }
         catch(Exception ex)
         {
+            System.out.println(ex.getMessage());
             response.put(Messages.ERROR_KEY, Messages.ERROR_SISTEMA);
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
         }

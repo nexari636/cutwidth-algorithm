@@ -55,6 +55,7 @@ public class InteraccionesData
                 conexionesBaraja.clear();
                 conexionesBaraja.addAll(lst_busca);
                 lst_busca.clear();
+                
                 //Utilidades.ordenar_conexion_inicial(conexionesBaraja);
             }while(conexionesBaraja.size()<=0);
         }

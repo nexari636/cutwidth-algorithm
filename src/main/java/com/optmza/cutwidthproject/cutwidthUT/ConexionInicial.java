@@ -4,6 +4,8 @@
  */
 package com.optmza.cutwidthproject.cutwidthUT;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,7 @@ public class ConexionInicial
         return this.nodo;
     }
     
+    @JsonIgnore
     public Integer getNodoNumero(){
         return Integer.parseInt(nodo);
     }

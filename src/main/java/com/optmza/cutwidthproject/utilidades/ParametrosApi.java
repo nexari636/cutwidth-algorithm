@@ -19,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ParametrosApi 
 {
-    Integer poblacion;
+    Integer muestra;
     Integer interacciones;
     
     Double temperatura_inicial;

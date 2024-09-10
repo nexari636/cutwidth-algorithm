@@ -22,7 +22,7 @@ public class Scutwidth
 {
     List<ConexionInicial> lst_conexion_inicial;
     Integer CANTIDAD_NODOS;
-    Integer POBLACION=25;
+    Integer MUESTRA=25;
     Integer ITERACCIONES=5;
     public static int CONTADOR=0;
     int menorGlobal=0;
@@ -46,10 +46,10 @@ public class Scutwidth
     
     
     
-    public Scutwidth(List<ConexionInicial> lst_conexion_inicial,Integer poblacion,Integer iteracciones) //RS O NN
+    public Scutwidth(List<ConexionInicial> lst_conexion_inicial,Integer muestra,Integer iteracciones) //RS O NN
     {
         this.lst_conexion_inicial=lst_conexion_inicial; 
-        this.POBLACION=poblacion;
+        this.MUESTRA=muestra;
         this.ITERACCIONES=iteracciones;
         this.CONTADOR=0;
         this.menorGlobal=0;
@@ -154,9 +154,9 @@ public class Scutwidth
         for(int i=1;i<=ITERACCIONES;i++)
         {     
             System.out.println("INTERACCION= "+i);
-            menor_corte=new int[POBLACION+1];
+            menor_corte=new int[MUESTRA+1];
             CONTADOR=0;
-            for(int x=0;x<=POBLACION;x++)
+            for(int x=0;x<=MUESTRA;x++)
             {
                 Nodo[]Nodos=crear_nodos(nod);
                 Cutwidth(nodos_indentificador,itd.getConexionesBaraja(),Nodos);
@@ -300,6 +300,8 @@ public class Scutwidth
                 return new int[]{-1,-1};
         }else
         {
+            pos_inicial=-1;
+            pos_final=-1;
             //letras
             for(int x=0;x<lst_conexion_inicial.size();x++)
             {
