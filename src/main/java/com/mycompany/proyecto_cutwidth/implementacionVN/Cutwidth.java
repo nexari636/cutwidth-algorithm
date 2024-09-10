@@ -14,10 +14,10 @@ public class Cutwidth {
 
     public static String SEPARADOR_ARCHIVO = " ";
     public static String SEPARADOR = ",";
-    public static String NOMBRE_ARCHIVO = "will199.mtx.txt";
+    public static String NOMBRE_ARCHIVO = "letras.txt";
     public static Integer CANTIDAD_NODOS;
-    public static Integer POBLACION = 25;
-    public static Integer ITERACCIONES = 5;
+    public static Integer MUESTRA = 1;
+    public static Integer ITERACCIONES = 1;
     public static int CONTADOR = 0;
 
     public static List<ConexionInicial> lst_solucionActual;
@@ -35,7 +35,7 @@ public class Cutwidth {
         int num = 0;
 
         List<ConexionInicial> lst_conexion_inicial = Utilidades.leer_archivo(NOMBRE_ARCHIVO);
-
+        System.out.println(lst_conexion_inicial.size()+" tamanio");
         InteraccionesData itd = new InteraccionesData(lst_conexion_inicial);
         itd.conexionesBaraja = itd.copy_list_conexiones(lst_conexion_inicial);
 
@@ -47,9 +47,9 @@ public class Cutwidth {
 
         for (int i = 1; i <= ITERACCIONES; i++) {
             System.out.println("INTERACCION= " + i);
-            menor_corte = new int[POBLACION + 1];
+            menor_corte = new int[MUESTRA + 1];
             CONTADOR = 0;
-            for (int x = 0; x <= POBLACION; x++) {
+            for (int x = 1; x <= MUESTRA; x++) {
                 Nodo[] Nodos = crear_nodos(nod);
                 Cutwidth(nodos_indentificador, itd.conexionesBaraja, Nodos);
                 num = contar_particiones(Nodos, menor_corte);
@@ -79,11 +79,13 @@ public class Cutwidth {
             lst_solucionActual.clear();
             NodosActualSolucion = null;
 
-            System.out.println("El menor numero de conexiones entre todos los maximos es: " + Utilidades.MIN(menor_corte) + "\n\n");
+            //System.out.println("El menor numero de conexiones entre todos los maximos es: " + Utilidades.MIN(menor_corte) + "\n\n");
+            System.out.println("El menor numero de conexiones entre todos los maximos es: " + menorGlobal + "\n\n");
+
         }
 
         for (ConexionInicial ci : lst_solucionActualGLOBAL) 
-            System.out.println(ci.nodo + " - " + ci.conexion);
+            System.out.println(ci.nodo + " - " + ci.conexion+" pepa");
         
         System.out.println("El cutwidth mejor encontrado es de valor: " + menorGlobal);
 
@@ -92,21 +94,30 @@ public class Cutwidth {
     }
 
     private static void Cutwidth(Map<String, Integer> nodos_indentificador, List<ConexionInicial> lst_conexion_inicial, Nodo[] Nodos) {
+        
+//        System.out.println("************NODOSSSSSSSSSSSS********************");
+//        for(int x=0;x<Nodos.length;x++){
+//            System.out.println(Nodos[x].getValue());
+//        }
+//        System.out.println("********************************");
+
         for (int x = 0; x < Nodos.length; x++) 
         {
             int[] rango_conexion_inicial = obtener_rango(lst_conexion_inicial, Nodos[x].getValue());
-            if (rango_conexion_inicial[0] == -1) continue;
             
+            if (rango_conexion_inicial[0] == -1) { continue;}
+            System.out.println(rango_conexion_inicial[0]+" {} "+rango_conexion_inicial[1]);
             for (int i = rango_conexion_inicial[0]; i <= rango_conexion_inicial[1]; i++) {
                 int n = 0;
-                if (lst_conexion_inicial.get(i).nodo.equals(lst_conexion_inicial.get(i).conexion)) {
-                    continue;
-                }
+//                if (lst_conexion_inicial.get(i).nodo.equals(lst_conexion_inicial.get(i).conexion)) {
+//                    continue;
+//                }
 
                 int rango_inicial = nodos_indentificador.get(lst_conexion_inicial.get(i).getNodo());
                 int rango_final = nodos_indentificador.get(lst_conexion_inicial.get(i).getConexion());
 
-                if (rango_inicial > rango_final) {
+                if (rango_inicial > rango_final) 
+                {
                     int aux = rango_inicial;
                     rango_inicial = rango_final;
                     rango_final = aux;
@@ -140,6 +151,7 @@ public class Cutwidth {
         int pos_final = lst_conexion_inicial.size() - 1;
         Boolean posI = false;
         if (es_numero) {
+                       
             int pos_lista = (pos_inicial + pos_final) / 2;
             Boolean encontrado = false;
 
@@ -187,6 +199,8 @@ public class Cutwidth {
                 return new int[]{-1, -1};
             }
         } else {
+            pos_inicial=-1;
+            pos_final=-1;
             //letras
             for (int x = 0; x < lst_conexion_inicial.size(); x++) {
                 if (!posI) {
@@ -208,6 +222,9 @@ public class Cutwidth {
     }
 
     public static void insertar_particiones(Nodo nodo, int particion_a, int particion_b) {
+        
+        //System.out.println(nodo.getValue()+" - "+particion_a+" - "+particion_b);
+        
         if (particion_a >= 1) {
             nodo.setCant_vertices_particionA(nodo.getCant_vertices_particionA() + particion_a);
         }
@@ -219,8 +236,10 @@ public class Cutwidth {
 
     private static Nodo[] crear_nodos(String[] nodos) {
         try {
+            
             Nodo[] Nodos = new Nodo[CANTIDAD_NODOS];
             for (int x = 0; x < Nodos.length; x++) {
+                System.out.println(nodos[x]+" nodito");
                 Nodos[x] = new Nodo(nodos[x], 1);
             }
             return Nodos;

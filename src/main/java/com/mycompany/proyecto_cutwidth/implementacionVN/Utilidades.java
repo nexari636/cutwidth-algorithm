@@ -23,7 +23,7 @@ public class Utilidades
     public static List<ConexionInicial> leer_archivo(String NOMBRE_ARCHIVO)
     {
        String directorio=System.getProperty("user.dir");
-       String ruta="\\conjuntosDatos\\"+NOMBRE_ARCHIVO;
+       String ruta="\\conjuntosDatos\\nn\\"+NOMBRE_ARCHIVO;
        HashSet<String> lst_busca = new HashSet<String>();
        try 
        {
@@ -46,6 +46,9 @@ public class Utilidades
             }
             nodos_grafo_orden=ordenar_vector(lst_busca.stream().toArray(String[]::new));
             ordenar_conexion_inicial(lst_conexion_inicial);
+            for(int i=0;i<lst_conexion_inicial.size();i++){
+                System.out.println(lst_conexion_inicial.get(i).nodo+" ci");
+            }
             return lst_conexion_inicial;
        }
        catch(Exception ex){

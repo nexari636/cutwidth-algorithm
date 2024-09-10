@@ -16,10 +16,10 @@ public class Cutwidth
     public static Integer CANTIDAD_NODOS;
     
     //RECOCIDO SIMULADO
-    public static Double TEMPERATURA_INICIAL=50d;
-    public static Double TEMPERATURA_FINAL=13d;
-    public static Integer L=5;
-    public static Double ALFA=0.8d;
+    public static Double TEMPERATURA_INICIAL=60000d;
+    public static Double TEMPERATURA_FINAL=1d;
+    public static Integer L=20;
+    public static Double ALFA=0.99d;
     
     public static List<ConexionInicial> lst_solucionActual;    
     public static List<ConexionInicial> lst_solucionCandidata;
@@ -187,6 +187,8 @@ public class Cutwidth
                 return new int[]{-1,-1};
         }else
         {
+            pos_inicial=-1;
+            pos_final=-1;
             //letras
             for(int x=0;x<lst_conexion_inicial.size();x++)
             {
