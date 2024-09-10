@@ -1,5 +1,5 @@
 let POSx=0;
-let Posy=0;
+let Posy=50;
 let POSx_AUX=POSx;
 let tamanio_separacion_nodos=200;
 let array_Nodos=[]
@@ -15,16 +15,22 @@ function init_diagram()
     
     myDiagram.nodeTemplate = new go.Node('Auto', {locationSpot: go.Spot.Center, width: 70, height: 70 })
     .add(
-        new go.Shape('Circle', {strokeWidth: 1, fill: 'white' }) 
+        new go.Shape('Circle', {strokeWidth: 1, fill: 'white',
+          portId: "",
+          fromSpot: go.Spot.Bottom,
+          toSpot: go.Spot.Bottom }) 
           .bind('fill', 'color'),
-          new go.TextBlock({ margin: 8})
+        new go.TextBlock({ margin: 8})
           .bind("text").bind("location", "loc", go.Point.parse),
     ).bind("location", "loc", go.Point.parse);
-
+  
+    
     myDiagram.linkTemplate =
-    new go.Link({ curve: go.Curve.Bezier,routing: go.Routing.AvoidsNodes, corner: 100})      
+    new go.Link({ curve: go.Curve.Bezier,routing: go.Routing.AvoidsNodes, corner: 20,
+      fromEndSegmentLength: 300,          
+      toEndSegmentLength: 300})      
       .add(
-        new go.Shape({ strokeWidth: 5 })  
+        new go.Shape({ strokeWidth: 3 })  
     );
 
 }
@@ -67,7 +73,7 @@ function limpiar_diagrama()
     POSx=0;
     Posy=0;
     POSx_AUX=POSx;
-    tamanio_separacion_nodos=100;
+    tamanio_separacion_nodos=200;
     array_Nodos=[];
     array_Conexiones=[];     
     myDiagram.div = null;

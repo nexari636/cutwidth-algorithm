@@ -17,12 +17,12 @@ angular.module("app")
         console.log(form);
         $scope.archivo=$scope.obtener_archivos("archivo");
 
-        if($scope.archivo!=null && form.interacciones.$viewValue!=undefined && form.poblacion.$viewValue!=undefined)
+        if($scope.archivo!=null && form.interacciones.$viewValue!=undefined && form.muestra.$viewValue!=undefined)
         {
             let formData=new FormData();
             formData.append("file",$scope.archivo);
-            formData.append("poblacion",form.interacciones.$viewValue);
-            formData.append("interacciones",form.poblacion.$viewValue);
+            formData.append("interacciones",form.interacciones.$viewValue);
+            formData.append("muestra",form.muestra.$viewValue);
 
             $.ajax({
                 method:"POST",
@@ -47,10 +47,14 @@ angular.module("app")
                         for(let nodo of data.conexion)           
                             crear_conexiones(nodo.nodo,nodo.conexion);
                         asignar_nodos_diagrama();
-
+                  
+                        $('#corteval').text(data.mejorCorte)
                         toaskActive("La tarea fue completada con exito");
 
                     });
+
+
+
                 },
                 error: function (objXMLHttpRequest) {
                     console.log("error: ", objXMLHttpRequest);

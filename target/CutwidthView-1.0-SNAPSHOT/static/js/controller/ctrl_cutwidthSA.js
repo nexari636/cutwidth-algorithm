@@ -50,7 +50,7 @@ angular.module("app")
                         for(let nodo of data.conexion)           
                             crear_conexiones(nodo.nodo,nodo.conexion);
                         asignar_nodos_diagrama();
-
+                        $('#corteval').text(data.mejorCorte)
                         toaskActive("La tarea fue completada con exito");
 
                     });

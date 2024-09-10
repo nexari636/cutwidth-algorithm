@@ -11,8 +11,8 @@
             <div class="margen">
                 <form name="form" ng-submit="enviar_data(form)">
                     <div class="mb-3">
-                        <label for="poblacion" class="form-label">Poblacion</label>
-                        <input type="number" class="form-control" id="poblacion" aria-describedby="poblacion" name="poblacion" ng-model="poblacion">
+                        <label for="muestra" class="form-label">Muestra</label>
+                        <input type="number" class="form-control" id="muestra" aria-describedby="muestra" name="muestra" ng-model="muestra">
                     </div>
                     <div class="mb-3">
                         <label for="interacciones" class="form-label">Interacciones</label>
@@ -30,8 +30,11 @@
     </div>
   </div>
 
-  
-    <div id="myDiagramDiv" class="DiagramDiv"></div>
+  <div class="cortenum">
+    <span class="titlecorte">Corte:<span id="corteval">0</span></span>
+  </div>
+
+  <div id="myDiagramDiv" class="DiagramDiv"></div>
 
   
 

@@ -100,3 +100,13 @@ nav ul li a:hover:before {
 	padding: 10px;
 	border-style: solid solid solid;
 }
+
+.cortenum
+{
+	margin-top: 10px;
+	margin-left: 30px;
+}
+
+#corteval{
+	margin: 5px;
+}
