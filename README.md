@@ -1,8 +1,5 @@
 # Algoritmo Cutwidth
 
-## Autor
-**Nombre:** Jhon Byron Leturne Pluas
-
 ## Descripción
 
 Este proyecto implementa el **Algoritmo Cutwidth**, cuyo propósito es calcular y optimizar el ancho de corte en grafos. El ancho de corte es una medida importante en la teoría de grafos que ayuda a evaluar la capacidad de separación entre diferentes conjuntos de nodos.
